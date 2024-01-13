@@ -6,9 +6,24 @@
     <title>Gerador de Menores Caminhos</title>
 </head>
 <body>
-    <form action='gera_menores_caminhos_usuario' method="post">
+    <form action='gera_menores_caminhos_cliente' method="post">
     {% csrf_token %}
-        <textarea name="codigo" id="codigo" cols="30" rows="10">OI</textarea>
+        <textarea name="codigo" id="codigo" cols="30" rows="10">código</textarea>
+        <textarea name="grafo" id="grafo" cols="30" rows="10">
+{
+    "grafo1" : {
+        "vertices" : ["A", "B", "C", "D", "E"],
+        "arestas" : {
+            "a1" : ["A", "B"],
+            "a2" : ["B", "C"],
+            "a3" : ["C", "D"],
+            "a4" : ["D", "E"]
+        },
+        "vertice_inicial" : "A",
+        "vertice_final" : "E"
+    }
+}    
+        </textarea>
         <button type="submit">VAI</button>
     </form>
 </body>

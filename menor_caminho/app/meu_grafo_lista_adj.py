@@ -1,6 +1,7 @@
 from bibgrafo.grafo_lista_adjacencia import GrafoListaAdjacencia
 from bibgrafo.grafo_errors import *
 
+
 class MeuGrafo(GrafoListaAdjacencia):
 
     def menor_caminho_rec(self, caminhos, v_caminho, dic_pi, Vi, caminho = []):
