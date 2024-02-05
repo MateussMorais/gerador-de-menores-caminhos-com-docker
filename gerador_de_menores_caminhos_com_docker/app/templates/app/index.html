@@ -6,10 +6,23 @@
     <title>Gerador de Menores Caminhos</title>
 </head>
 <body>
-    <form action='gera_menores_caminhos_cliente' method="post">
+    <form action='gera_codigo_cliente' method="post">
     {% csrf_token %}
-        <textarea name="codigo" id="codigo" cols="30" rows="10">código</textarea>
-        <textarea name="grafo" id="grafo" cols="30" rows="10">
+        <textarea spellcheck="false" name="codigo" id="codigo" cols="30" rows="10">
+from bibgrafo.grafo_lista_adjacencia import GrafoListaAdjacencia
+
+class MeuGrafo(GrafoListaAdjacencia):
+    def meu_dijkstra():
+        '''crie sua função'''
+
+    def auxiliar():
+        '''crie sua(s) função(ões) auxiliar(es)'''
+        </textarea>
+        <button type="submit">Enviar</button>
+    </form>
+    <form action='gera_grafo' method="post">
+    {% csrf_token %}
+        <textarea spellcheck="false" name="grafo" id="grafo" cols="30" rows="10">
 {
     "grafo1" : {
         "vertices" : ["A", "B", "C", "D", "E"],
@@ -24,7 +37,19 @@
     }
 }    
         </textarea>
-        <button type="submit">VAI</button>
+        <button type="submit" onclick="alert('Grafo enviado com sucesso!')">Enviar</button>
     </form>
+    <form action="compara">
+        {% csrf_token %}
+        <button type="submit">Vai</button>
+    </form>
+    {{erro}}
+    {% if erro == 'Existe alguma irregularidade no seu código' %}
+    <script>alert('Existe alguma irregularidade no seu código')</script>
+    {% else %}
+    {% if erro == 'Código enviado com sucesso!' %}
+    <script>alert('Código enviado com sucesso')</script>
+    {% endif %}
+    {% endif %}
 </body>
 </html>
