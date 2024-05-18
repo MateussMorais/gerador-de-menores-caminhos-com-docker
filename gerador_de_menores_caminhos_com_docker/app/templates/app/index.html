@@ -18,7 +18,7 @@ class MeuGrafo(GrafoListaAdjacencia):
     def auxiliar():
         '''crie sua(s) função(ões) auxiliar(es)'''
         </textarea>
-        <button type="submit">Enviar</button>
+        <button type="submit" onclick="alert('Código enviado com sucesso!')">Enviar</button>
     </form>
     <form action='gera_grafo' method="post">
     {% csrf_token %}
@@ -44,12 +44,5 @@ class MeuGrafo(GrafoListaAdjacencia):
         <button type="submit">Vai</button>
     </form>
     {{erro}}
-    {% if erro == 'Existe alguma irregularidade no seu código' %}
-    <script>alert('Existe alguma irregularidade no seu código')</script>
-    {% else %}
-    {% if erro == 'Código enviado com sucesso!' %}
-    <script>alert('Código enviado com sucesso')</script>
-    {% endif %}
-    {% endif %}
 </body>
 </html>

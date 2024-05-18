@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  app-django:
+    image: app-django:1.0
+    build: .
+    ports:
+      - "8001:8000"
+    networks:
+      - django-bridge
+
+networks:
+  django-bridge:
+    driver: bridge
