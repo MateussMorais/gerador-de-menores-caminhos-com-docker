@@ -6,19 +6,10 @@
     <title>Gerador de Menores Caminhos</title>
 </head>
 <body>
-    <form action='gera_codigo_cliente' method="post">
+    <form action='gera_codigo_cliente' method="post" enctype="multipart/form-data">
     {% csrf_token %}
-        <textarea spellcheck="false" name="codigo" id="codigo" cols="30" rows="10">
-from bibgrafo.grafo_lista_adjacencia import GrafoListaAdjacencia
-
-class MeuGrafo(GrafoListaAdjacencia):
-    def meu_dijkstra():
-        '''crie sua função'''
-
-    def auxiliar():
-        '''crie sua(s) função(ões) auxiliar(es)'''
-        </textarea>
-        <button type="submit" onclick="alert('Código enviado com sucesso!')">Enviar</button>
+        <label for="">Envie seu arquivo: <input name="codigo" type="file" required></label>
+        <button type="submit" >Enviar</button>
     </form>
     <form action='gera_grafo' method="post">
     {% csrf_token %}
@@ -43,6 +34,12 @@ class MeuGrafo(GrafoListaAdjacencia):
         {% csrf_token %}
         <button type="submit">Vai</button>
     </form>
-    {{erro}}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </body>
 </html>
