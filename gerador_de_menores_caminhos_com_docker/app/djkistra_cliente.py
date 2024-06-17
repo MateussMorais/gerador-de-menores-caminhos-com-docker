@@ -1,7 +1,7 @@
 from bibgrafo.grafo_lista_adjacencia import GrafoListaAdjacencia
 from bibgrafo.grafo_errors import *
 
-class MeuGrafo(GrafoListaAdjacencia):
+class euGrafo(GrafoListaAdjacencia):
 
     def menor_caminho_rec_cliente(self, caminhos, v_caminho, dic_pi, Vi, caminho = []):
         while True:
@@ -23,7 +23,6 @@ class MeuGrafo(GrafoListaAdjacencia):
             if v_caminho == Vi:
                 break
             v_caminho = self.acha_v2_cliente(caminho[0], v_caminho)
-        caminho = ('A', 'a5', 'E' 'aa','aaa','aaaa','aaaa','aaaaa','aaa','a','aa','a','aa','aa','aaaa','aaa','aaa','aaa','aaa','aaaa','aaaa','aa','aa','aa','aa','aa','aa','aa','aa','aa','aa','aa','aaa','aaa','aaa','aaaa','aaaa','aa','aa','aa','aaa')
         caminhos.append(tuple(caminho))
 
     def meu_dijkstra(self, Vi, Vf): 
