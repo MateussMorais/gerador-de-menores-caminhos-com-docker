@@ -1,0 +1,28 @@
+.container {
+    height: 100vh !important;
+}
+#form-arquivo, #form-grafo{
+    width: 70%;
+}
+.input-group-text{
+    width: 141px;
+    justify-content: center;
+}
+#grafo::-webkit-scrollbar {
+    width: 8px;               
+}
+
+#grafo::-webkit-scrollbar-thumb {
+background-color: gray;    
+border-radius: 20px;       
+border: 2px solid rgb(255, 255, 255);  
+}
+
+#grafo::-webkit-scrollbar-resizer{
+    display: none;
+}
+
+#span, #grafo, #inputGroupFile04{
+    border: solid 1px gray;
+}
+

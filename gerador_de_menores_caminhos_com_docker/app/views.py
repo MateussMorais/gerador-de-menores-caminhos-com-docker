@@ -1,5 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
-from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
@@ -8,12 +7,13 @@ from gerador_de_menores_caminhos_com_docker.meu_grafo_lista_adj import MGrafo as
 
 PATH = os.getcwd() + "\\app\\djkistra_cliente.py"
 
-def index(request, erro = ''):
-    context = {'erro' : erro}
-    return render(request, "app/index.html", context) 
+def index(request):
+    return render(request, "app/index.html") 
 
 
 def gera_codigo_cliente(request):
+    if os.path.exists('app/djkistra_cliente.py'):
+        os.remove(PATH)
     arquivo = request.FILES.get("codigo")
     path = os.path.join(settings.BASE_DIR, "app")
     FileSystemStorage(location=path).save("djkistra_cliente.py", arquivo)
@@ -27,13 +27,15 @@ def gera_grafo(request):
         importlib.reload(dc)
     except Exception as error:
         mensagem = error
-        os.remove(PATH)
     else:
+        global lista_nomes
+        lista_nomes = []
         try:
             texto = request.POST.get("grafo")
             dic_grafo = json.loads(texto)
             lista_grafos = []
             for grafo in dic_grafo:
+                lista_nomes.append(grafo)
                 cliente = dc.MeuGrafo()
                 meu = mg()
                 for vertice in dic_grafo[grafo]["vertices"]:
@@ -41,7 +43,7 @@ def gera_grafo(request):
                     meu.adiciona_vertice(vertice)
                 for aresta in dic_grafo[grafo]["arestas"]:
                     try:
-                        peso = aresta[2]
+                        peso = dic_grafo[grafo]["arestas"][aresta][2]
                     except:
                         peso = 1
                     cliente.adiciona_aresta(aresta, dic_grafo[grafo]["arestas"][aresta][0], dic_grafo[grafo]["arestas"][aresta][1], peso)
@@ -51,27 +53,35 @@ def gera_grafo(request):
 
             global lista_grafos_global
             lista_grafos_global = lista_grafos
+        except json.JSONDecodeError as error:
+            mensagem =  'Erro no envio do grafo: ' + str(error)
         except Exception as error:
             mensagem = error
-            os.remove(PATH)
     
     messages.error(request, mensagem)
     return redirect('./')
 
 def compara(request):
-    mensagem = 'tudo ok'
+    mensagem = None
+    resposta = {}
     try:
+        index = 0
         for grafo in lista_grafos_global:
             caminhos = grafo[0][1].dijkstra(grafo[1],grafo[2])
+            print(grafo[0][1])
             caminho_cliente = (grafo[0][0].meu_dijkstra(grafo[1],grafo[2]))
-        for caminho in caminhos:
-            if caminho_cliente != caminho:
-                mensagem = (f'{caminho_cliente} não está entre as soluções possíveis: {caminhos}')
+            if caminho_cliente not in caminhos:
+                resposta[lista_nomes[index]] = {'caminho_cliente' :caminho_cliente, 'caminhos': caminhos, 'situacao': 'erro'}
+            else:
+                resposta[lista_nomes[index]] = {'caminho_cliente' :caminho_cliente, 'caminhos': caminhos, 'situacao': 'ok'}
+            index+=1
     except NameError as error:
-        mensagem = 'Envie um grafo'
+        mensagem = 'Envie um grafo' 
     except Exception as error:
         mensagem = error
-    os.remove(PATH)
-    print(mensagem)
-    messages.error(request, mensagem)
-    return redirect('./')
+    if mensagem != None:
+        messages.error(request, mensagem)
+    context = {
+        'respostas' : resposta
+    }
+    return render(request, "app/index.html", context)

@@ -4,42 +4,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Menores Caminhos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app/style.css' %}"">
 </head>
-<body>
-    <form action='gera_codigo_cliente' method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-        <label for="">Envie seu arquivo: <input name="codigo" type="file" required></label>
-        <button type="submit" >Enviar</button>
-    </form>
-    <form action='gera_grafo' method="post">
-    {% csrf_token %}
-        <textarea spellcheck="false" name="grafo" id="grafo" cols="30" rows="10">
+<body class="d-flex flex-column justify-content-center container">
+
+    <div id="div-principal" class="d-flex flex-column justify-content-center align-items-center">
+
+        <h1>Menor Caminho Dijkstra</h1>
+
+        <form action='gera_codigo_cliente' id="form-arquivo" method="post" class="col-md-12 mb-4" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <input class="form-control" id="inputGroupFile04" aria-label="Upload" name="codigo" type="file" required>
+                <button class="btn btn-outline-secondary" id="inputGroupFileAddon04" type="submit" >Enviar</button>
+            </div>
+
+        </form>
+
+        <form id="form-grafo" class="col-md-12 mb-4" action='gera_grafo' method="post">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <span id="span" class="input-group-text">Grafo</span>
+            <textarea class="form-control" aria-label="With textarea" spellcheck="false" name="grafo" id="grafo" cols="30" rows="10">
 {
     "grafo1" : {
         "vertices" : ["A", "B", "C", "D", "E"],
         "arestas" : {
-            "a1" : ["A", "B"],
-            "a2" : ["B", "C"],
-            "a3" : ["C", "D"],
-            "a4" : ["D", "E"]
+            "a1" : ["A", "B", 1],
+            "a2" : ["B", "C", 1],
+            "a3" : ["C", "D", 1],
+            "a4" : ["D", "E", 1],
+            "a5" : ["A", "E", 4]
         },
         "vertice_inicial" : "A",
         "vertice_final" : "E"
     }
-}    
-        </textarea>
-        <button type="submit" onclick="alert('Grafo enviado com sucesso!')">Enviar</button>
-    </form>
-    <form action="compara">
+}           </textarea>
+            <button class="btn btn-outline-secondary" type="submit">Enviar</button> 
+        </div>
+            
+        </form>
+
+        <form action="compara">
         {% csrf_token %}
-        <button type="submit">Vai</button>
-    </form>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+
+            <button class="btn btn-secondary mb-3" type="submit">Comparar</button>
+        </form>
+        {% if messages %}
+        <style>
+            .erro{
+                background-color: #f8f9fa;
+                border: solid 1px gray;
+                text-align: center;
+                width: 141px;
+            }
+            .mensagem-erro{
+                border: solid 1px gray;
+                text-align: center;
+            }
+            .messages{
+                width: 70%;
+            }
+        </style>
+        <table class="messages">
+            {% for message in messages %}
+            <tr{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                <td class="erro">
+                    Erro
+                </td>
+                <td class="mensagem-erro">
+                    {{ message }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        {% if respostas %}
+            <style>
+                .nome-grafo, .caminhos{
+                    background-color: #f8f9fa;
+                    border: solid 1px gray;
+                    text-align: center;
+                }
+                .nome-grafo{
+                    border-right: none;
+                    width: 141px;
+                }
+                .caminho-cliente{
+                    text-align: center;
+                    font-weight: bold;
+                    width: 350px;
+                }
+                .caminho-cliente-certo{
+                    border: solid 1px green;
+                    color: green;
+                }
+                .caminho-cliente-errado{
+                    border: solid 1px red;
+                    color: red;
+                }
+                th{
+                    border: solid 1px gray;
+                    text-align: center;
+                    border-bottom: none;
+                    border-radius: 5px;
+                    overflow: hidden;
+                }   
+                .tabela-resposta{
+                    width: 70%;
+                }
+            </style>
+            <table class="tabela-resposta mb-3">
+                <tr>
+                    <th class="nome-grafo">
+                        Grafo
+                    </th>
+                    <th>
+                        Saída
+                    </th>
+                    <th class="caminhos">
+                        Menores Caminhos Possíveis
+                    </th>
+                </tr>
+                {% for key, value in respostas.items %}
+                    <tr>
+                        <td class="nome-grafo">
+                            {{key}}
+                        </td>
+                        {% if value.situacao == 'erro' %}
+                        <td class="caminho-cliente caminho-cliente-errado">
+                            {{value.caminho_cliente}}
+                        </td>
+                        {% else %}
+                        <td class="caminho-cliente caminho-cliente-certo">
+                            {{value.caminho_cliente}}
+                        </td>
+                        {% endif %}
+                        <td class="caminhos">
+                            {{value.caminhos}}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        
+    </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </html>
