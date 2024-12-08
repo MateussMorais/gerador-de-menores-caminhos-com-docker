@@ -1,16 +1,20 @@
 html{
     height: 100%;
 }
+
 body{
     min-height: 100%;
 }
+
 #form-arquivo, #form-grafo{
     width: 70%;
 }
+
 .input-group-text{
     width: 141px;
     justify-content: center;
 }
+
 #grafo::-webkit-scrollbar {
     width: 8px;               
 }
@@ -28,64 +32,78 @@ border: 2px solid rgb(255, 255, 255);
 #span, #grafo, #inputGroupFile04{
     border: solid 1px gray;
 }
+
 .container{
     min-height: 100vh;
 }
+
 .erro{
     background-color: #f8f9fa;
     border-right: solid 1px gray;
     text-align: center;
     width: 141px;
 }
+
 .messages{
     width: 70%;
     border: solid 1px gray;
 }
+
 .nome-grafo, .caminhos{
     background-color: #f8f9fa;
     border: solid 1px gray;
     text-align: center;
 }
+
 .nome-grafo{
     border-right: none;
     width: 141px;
 }
+
 .caminho-cliente{
     text-align: center;
     font-weight: bold;
     width: 350px;
 }
+
 .caminho-cliente-certo{
     border: solid 1px green;
     color: green;
 }
+
 .caminho-cliente-errado{
     border: solid 1px red;
     color: red;
 }
+
 th{
     border: solid 1px gray;
     text-align: center;
     border-top: none !important;
     border-bottom: none;
 }
+
 th:first-of-type{
     border-left: none !important;
 }
+
 th:last-of-type{
     border-right: none !important;
 }
+
 td:first-of-type{
     border-left: none !important;
-}   
+}  
+
 td:last-of-type{
     border-right: none !important;
 }
+
 tr:last-of-type td{
     border-bottom: none !important;
 }
+
 .tabela-resposta{
     width: 70%;
     border: 1px solid gray;
 }
-
